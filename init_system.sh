@@ -2,18 +2,18 @@
 
 
 function update {
-    echo "Updating $1"
-    sudo aptitude install -y ${@:2} > /dev/null
+    echo "Updating $@"
+    sudo aptitude install $@
 }
 
 function install {
-    echo "Installing $1"
-    sudo aptitude install -y ${@:2} > /dev/null
+    echo "Installing $@"
+    sudo aptitude install $@
 }
 
 function remove {
-    echo "Removing $1"
-    sudo apt-get purge --auto-remove -y ${@:2} > /dev/null
+    echo "Removing $@"
+    sudo apt-get purge --auto-remove $@
 }
 
 
@@ -21,20 +21,38 @@ function main {
     echo "Updating system"
     sudo aptitude update > /dev/null
 
-    remove "brasero" brasero brasero-cdrkit brasero-common libbrasero-media3-1
-    remove "gthumb" gthumb gthumb-data
-    remove "banshee" banshee
-    remove "totem" totem gir1.2-totem-1.0 gir1.2-totem-plparser-1.0 libtotem-plparser18 libtotem0 totem-mozilla totem-common totem-plugins-extra totem-plugins
-    remove "pidgin" pidgin pidgin-data libpurple0
-    remove "mintutils" mintupload mintwelcome mintbackup
-    remove "simple-scan" simple-scan
+    remove brasero brasero-cdrkit brasero-common libbrasero-media3-1
+    remove gthumb gthumb-data
+    remove banshee
+    remove totem gir1.2-totem-1.0 gir1.2-totem-plparser-1.0 libtotem-plparser18 libtotem0 totem-mozilla totem-common totem-plugins-extra totem-plugins
+    remove pidgin pidgin-data libpurple0
+    remove mintupload mintwelcome mintbackup
+    remove simple-scan
+    remove vino
+    remove fonts-tlwg-mono mono-* libmono-*
+    remove gir1.2-atspi-2.0 at-spi2-core python3-pyatspi qt-at-spi
+    remove evolution-data-server evolution-data-server-common
 
+    update firefox
+    update thunderbird thunderbird-gnome-support thunderbird-locale-en
 
-    install "mercurial" mercurial mercurial-common
-    install "vim" vim
-    install "vlc" vlc vlc-nox vlc-plugin-notify vlc-plugin-pulse
+    install vlc vlc-nox vlc-plugin-notify vlc-plugin-pulse
+    install conky
+    install kupfer
+    install keepassx
+    install dropbox caja-dropbox
+    install curl
 
-    update "firefox" firefox
-    update "thunderbird" thunderbird
+    # btsync
+    sh -c "$(curl -fsSL http://debian.yeasoft.net/add-btsync-repository.sh)"
+    install btsync-gui
+
+    # dev
+    install vim
+    install mercurial mercurial-common
+    install vagrant
+    install python-pip
+
 }
 
+main "${@}"
