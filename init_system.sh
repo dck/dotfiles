@@ -50,8 +50,9 @@ function main {
     # dev
     install vim
     install mercurial mercurial-common
+    install virtualbox virtualbox-qt virtualbox-dkms
     install vagrant
-    install python-pip
+    install python-pip python-virtualenv
 
 }
 
