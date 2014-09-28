@@ -1,0 +1,3 @@
+[submodule "Packages/Package Control"]
+	path = Packages/Package Control
+	url = https://github.com/wbond/sublime_package_control.git
