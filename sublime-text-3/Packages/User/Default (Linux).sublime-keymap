@@ -1,0 +1,13 @@
+[
+	{ "keys": ["ctrl+alt+x"], "command": "alignment" },
+	{ "keys": ["f8"], "command": "solarized_toggle" },
+	{ "keys": ["f12"], "command": "goto_definition" },
+	{
+		"keys": ["ctrl+alt+w"],
+		"command": "toggle_setting",
+		"args":
+		{
+			"setting": "word_wrap"
+		}
+	}
+]
