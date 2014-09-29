@@ -37,6 +37,7 @@ colorscheme Tomorrow-Night
 set nocursorline
 set nocursorcolumn
 set number
+set background=dark
 
 set listchars=tab:>-,trail:⋅,nbsp:⋅
 set list
@@ -55,3 +56,4 @@ endif
 let g:NERDTreeWinSize = 25
 map <F2> :NERDTreeToggle<CR>
 
+let g:indentLine_char = '│'
