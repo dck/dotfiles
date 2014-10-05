@@ -5,6 +5,7 @@ alias cj='caja .'
 #alias vim="printf '\e[8;33;105t'; vim"
 
 # variables
+export LC_TIME=en_US.UTF-8
 
 export TERM=xterm-256color
 export GOPATH=$HOME/work/golang
