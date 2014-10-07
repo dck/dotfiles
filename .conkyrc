@@ -85,7 +85,7 @@ ${color1}SYSTEM${color} ${hr 2}
 Kernel:  ${alignr}${kernel}
 CPU1: ${alignr}${color2}${cpu cpu0}%${color} ${color2}${cpubar cpu0 8,60}${color}
 CPU2: ${alignr}${color2}${cpu cpu1}%${color} ${color2}${cpubar cpu1 8,60}${color}
-RAM: ${alignr}${color2}${memperc}%${color} ${color2}${membar 8,60}${color}
+RAM: ${alignr}${color2}${mem}${color} ${color2}${membar 8,60}${color}
 Uptime: ${alignr}${uptime}
 Temp: ${alignr}${color1}${hwmon 0 temp 1}°C${color}
 
