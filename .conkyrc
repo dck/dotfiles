@@ -1,6 +1,6 @@
 # Use Xft?
 use_xft yes
-xftfont MavenPro-Medium:size=11
+xftfont Rambla:size=11
 xftalpha 0.8
 text_buffer_size 2048
 
@@ -90,8 +90,8 @@ Uptime: ${alignr}${uptime}
 Temp: ${alignr}${color1}${hwmon 0 temp 1}°C${color}
 
 ${color1}DATE${color} ${hr 2}
-${font Comfortaa-Bold:size=56}${color7}${alignc}${time %H:%M}${alignc}${color}${font}
-${voffset 8}${color3}${font Comfortaa-Bold:size=12}${alignc}${time %A %d %b %Y}${alignc}${font}${color}
+${font TRS Million:size=56}${color7}${alignc}${time %H:%M}${alignc}${color}${font}
+${voffset 8}${color3}${font Jura:size=12}${alignc}${time %A %d %b %Y}${alignc}${font}${color}
 
 ${color1}HD${color} ${hr 2}
 ${color2}Root:${color}
