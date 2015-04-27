@@ -3,17 +3,13 @@
 	"in_process_packages":
 	[
 	],
-	"installed_dependencies":
-	[
-		"0_package_control_loader",
-		"bz2"
-	],
 	"installed_packages":
 	[
 		"Alignment",
 		"All Autocomplete",
 		"DocBlockr",
 		"GitGutter",
+		"GoSublime",
 		"Makefile Improved",
 		"Package Control",
 		"Rust",
