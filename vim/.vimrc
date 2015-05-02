@@ -33,7 +33,7 @@ set lz
 
 " Appearance
 syntax on
-colorscheme Tomorrow-Night
+colorscheme  Tomorrow-Night
 set nocursorline
 set nocursorcolumn
 set number
