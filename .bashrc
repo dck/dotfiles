@@ -14,3 +14,5 @@ shopt -s cmdhist
 PROMPT_COMMAND='history -a'
 export HISTCONTROL="ignoredups"
 export HISTSIZE=1000
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
