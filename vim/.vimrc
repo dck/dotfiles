@@ -30,7 +30,6 @@ set incsearch
 set laststatus=2
 set lz
 
-
 " Appearance
 syntax on
 colorscheme  Tomorrow-Night
@@ -51,6 +50,8 @@ if v:version >= 703
     set colorcolumn=81 "mark the ideal max text width
         let s:color_column_old = 0
 endif
+
+autocmd Filetype gitcommit setlocal textwidth=72 colorcolumn=50,72
 
 " Plugins
 let g:NERDTreeWinSize = 25
