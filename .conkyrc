@@ -71,12 +71,12 @@ override_utf8_locale yes
 use_spacer none
 
 color2      111111
-color1      d2cc70  #header
-color4      d2cc70  #ip
+color1      F4E3B2  #header
+color4      F4E3B2  #ip
 color5      111111
 color6      111111
-color3      d2cc70  #date
-color7      d2cc70  #watch
+color3      CF5C36  #date
+color7      CF5C36  #watch
 
 
 
