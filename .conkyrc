@@ -90,7 +90,7 @@ Uptime: ${alignr}${uptime}
 Temp: ${alignr}${color1}${hwmon 0 temp 1}°C${color}
 
 ${color1}DATE${color} ${hr 2}
-${font TRS Million:size=60}${color7}${alignc}${time %H:%M}${alignc}${color}${font}
+${font CF Jacques Parizeau:size=80}${color7}${alignc}${time %H:%M}${alignc}${color}${font}
 ${voffset 8}${color3}${font Rambla:size=13}${alignc}${time %A %d %b %Y}${alignc}${font}${color}
 
 ${color1}HD${color} ${hr 2}
@@ -98,9 +98,7 @@ ${color2}Root:${color}
 ${fs_used /root}/${fs_size /root} ${alignr}${color2}${fs_bar 8,60 /root}${color}
 ${color2}Home:${color}
 ${fs_used /home}/${fs_size /home} ${alignr}${color2}${fs_bar 8,60 /home}${color}
-${if_existing /media/deck/hDATA}${color2}EHD:${color}
-${fs_used /media/deck/hDATA}/${fs_size /media/deck/hDATA} ${alignr}${color1}${fs_bar 8,60 /media/deck/hDATA}${color}
-${endif}
+
 # TOP
 ${color1}TOP${color} ${hr 2}
 ${top name 1}${alignr}${color2}${top cpu 1}%${color}
