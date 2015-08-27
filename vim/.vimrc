@@ -18,6 +18,7 @@ set smarttab
 set et
 set autoindent
 set cindent
+set backspace=indent,eol,start
 
 set wrap
 
