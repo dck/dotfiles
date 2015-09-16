@@ -53,7 +53,6 @@ function main {
     install virtualbox virtualbox-qt virtualbox-dkms
     install vagrant
     install python-pip python-virtualenv
-
 }
 
 main "${@}"
