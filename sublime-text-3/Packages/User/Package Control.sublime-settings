@@ -1,5 +1,6 @@
 {
 	"auto_upgrade_last_run": null,
+	"bootstrapped": true,
 	"in_process_packages":
 	[
 	],
@@ -7,21 +8,15 @@
 	[
 		"Alignment",
 		"All Autocomplete",
-		"DocBlockr",
 		"GitGutter",
 		"GoSublime",
-		"Makefile Improved",
-		"Markdown Preview",
 		"Package Control",
-		"RSpec",
-		"Rust",
 		"SideBarEnhancements",
 		"Solarized Color Scheme",
 		"Solarized Toggle",
 		"Tabright",
 		"Theme - Soda",
 		"Theme - Sodarized",
-		"Tomorrow Color Schemes",
 		"WordHighlight"
 	]
 }
