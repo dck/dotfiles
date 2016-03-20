@@ -23,10 +23,11 @@ set backspace=indent,eol,start
 set wrap
 
 set showmode
+set incsearch
 set hlsearch
 set ignorecase
+set smartcase
 set showmatch
-set incsearch
 
 set laststatus=2
 set lz
