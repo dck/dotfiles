@@ -18,5 +18,5 @@ export HISTSIZE=5000
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
-export PS1="\[\e[36m\]\u\[\e[m\]@\[\e[32m\]\h:\[\e[33;1m\] \w\[\e[m\]\[\e[34m\]\$(parse_git_branch)\[\e[00m\] \$ "
+export PS1="\[\e[36m\]\u\[\e[m\]@\[\e[32m\]\h:\[\e[33m\] \w\[\e[m\]\[\e[34m\]\$(parse_git_branch)\[\e[00m\] \$ "
 alias be='bundle exec'
