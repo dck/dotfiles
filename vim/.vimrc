@@ -34,7 +34,7 @@ set lz
 
 " Appearance
 syntax on
-colorscheme  Tomorrow-Night
+colorscheme solarized
 set nocursorline
 set nocursorcolumn
 set number
