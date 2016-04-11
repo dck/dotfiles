@@ -4,6 +4,7 @@ shopt -s histappend
 shopt -s cmdhist
 export HISTCONTROL="ignoredups"
 export HISTSIZE=5000
+export GOPATH=$HOME/work/go
 export PS1="\[\e[36m\]\u\[\e[m\]@\[\e[32m\]\h:\[\e[33m\] \w\[\e[m\]\[\e[34m\]\$(parse_git_branch)\[\e[00m\] \$ "
 
 eval "$(rbenv init -)"
