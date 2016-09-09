@@ -20,5 +20,6 @@
 	"theme": "Sodarized Light.sublime-theme",
 	"translate_tabs_to_spaces": true,
 	"trim_trailing_white_space_on_save": true,
-	"update_check": false
+	"update_check": false,
+	"open_files_in_new_window": false
 }
