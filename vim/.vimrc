@@ -14,6 +14,16 @@ set encoding=utf-8
 
 set tabstop=4
 set shiftwidth=4
+
+augroup myfiletypes
+    autocmd!
+    autocmd FileType ruby,eruby,yaml,markdown set ai sw=2 sts=2 et
+augroup END
+
+set wildmode=list:longest,list:full
+set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/*
+
+set clipboard=unnamed
 set smarttab
 set et
 set autoindent
