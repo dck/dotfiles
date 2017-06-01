@@ -8,15 +8,20 @@
 	[
 		"Alignment",
 		"All Autocomplete",
+		"Color Highlighter",
 		"GitGutter",
 		"GoSublime",
+		"LESS",
+		"Markdown Preview",
 		"Package Control",
+		"Pretty JSON",
 		"SideBarEnhancements",
 		"Solarized Color Scheme",
 		"Solarized Toggle",
 		"Tabright",
 		"Theme - Soda",
 		"Theme - Sodarized",
+		"TypeScript",
 		"WordHighlight"
 	]
 }
