@@ -1,0 +1,49 @@
+// Place your key bindings in this file to overwrite the defaults
+[
+  {
+    "key": "ctrl+shift+f",
+    "command": "workbench.action.findInFiles",
+    "when": "!searchInputBoxFocus"
+  },
+  {
+    "key": "shift+cmd+f",
+    "command": "-workbench.action.findInFiles",
+    "when": "!searchInputBoxFocus"
+  },
+  {
+    "key": "ctrl+shift+h",
+    "command": "workbench.action.replaceInFiles"
+  },
+  {
+    "key": "shift+cmd+h",
+    "command": "-workbench.action.replaceInFiles"
+  },
+  {
+    "key": "alt+space",
+    "command": "editor.action.triggerSuggest",
+    "when": "editorHasCompletionItemProvider && editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "ctrl+space",
+    "command": "-editor.action.triggerSuggest",
+    "when": "editorHasCompletionItemProvider && editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "cmd+1",
+    "command": "workbench.action.toggleSidebarVisibility"
+  },
+  {
+    "key": "cmd+b",
+    "command": "-workbench.action.toggleSidebarVisibility"
+  },
+  {
+    "key": "cmd+b",
+    "command": "editor.action.goToDeclaration",
+    "when": "editorHasDefinitionProvider && editorTextFocus && !isInEmbeddedEditor"
+  },
+  {
+    "key": "f12",
+    "command": "-editor.action.goToDeclaration",
+    "when": "editorHasDefinitionProvider && editorTextFocus && !isInEmbeddedEditor"
+  }
+]
