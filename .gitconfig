@@ -1,4 +1,19 @@
 [core]
-	editor = vim
+    editor = vim
+[user]
+	name = Denis Usanov
+	email = denis@usanov.info
 [push]
-	default = simple
+    default = simple
+
+[includeIf "gitdir:~/work/toptal/"]
+    path = ~/work/toptal/.gitconfig
+[rebase]
+    instructionFormat = [%<(14,trunc)%an] %s
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[diff "sopsdiffer"]
+	textconv = sops -d
