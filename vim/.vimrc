@@ -16,7 +16,7 @@ set updatetime=500
 set tabstop=4
 set shiftwidth=4
 
-set clipboard=unnamed
+" set clipboard=unnamed
 set smarttab
 set et
 set autoindent
@@ -37,7 +37,7 @@ set lz
 
 " Appearance
 syntax on
-colorscheme solarized
+colorscheme gruvbox
 set nocursorline
 set nocursorcolumn
 set number
