@@ -1,5 +1,5 @@
 export CLICOLOR=1
-export LSCOLORS=ExGxBxDxCxEgEdxbxgxcxd 
+export LSCOLORS=ExGxBxDxCxEgEdxbxgxcxd
 export WORDCHARS=''
 
 setopt prompt_subst
@@ -17,6 +17,9 @@ setopt NO_hist_beep
 setopt hist_ignore_dups
 setopt hist_ignore_space
 setopt inc_append_history
+setopt share_history
+HISTSIZE=10000000
+SAVEHIST=10000000
 
 autoload -U compinit && compinit
 autoload -U colors && colors
