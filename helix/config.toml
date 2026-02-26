@@ -25,4 +25,4 @@ right = ["selections", "position", "file-type"]
 [keys.normal]
 "C-s" = ":w"
 "C-q" = ":q"
-"Z" = { "Z" = ":write-quit", "Q" = ":quit!" }
+"Z" = { "Z" = ":write-quit!", "Q" = ":quit!" }
