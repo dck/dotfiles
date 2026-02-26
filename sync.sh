@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Idempotent dotfiles sync for macOS.
-# Creates symlinks from $HOME into this repo. Safe to run many times.
+# Run with no arguments to create symlinks; run with 'export' to collect
+# generated artifacts (Brewfile, tool-versions) before committing.
 set -euo pipefail
 
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -13,58 +14,70 @@ usage() {
 sync.sh — macOS dotfiles sync
 
 USAGE
-  ./sync.sh [-h|--help]
+  ./sync.sh [export | -h]
 
-DESCRIPTION
-  Creates symlinks from your home directory into this repo so that editing
-  files here takes effect immediately. Safe to run many times:
-    · already-correct symlinks are left alone  (skipped)
-    · real files are backed up to <file>.bak   (backed up)
-    · wrong symlink targets are corrected       (re-linked)
+COMMANDS
+  (none)   Create symlinks from \$HOME into this repo. Safe to run many times:
+             · already-correct symlinks are left alone  (skipped)
+             · real files are backed up to <file>.bak   (backed up)
+             · wrong symlink targets are corrected       (re-linked)
+
+  export   Collect machine-generated artifacts into the repo before committing.
+           Run this when you've installed new brew packages or changed tool
+           versions, then commit and push.
+
+  -h       Show this message.
 
 SYNCED FILES
-  Config         Repo path                                 Home path
-  ─────────────────────────────────────────────────────────────────────────────
-  Helix          helix/config.toml                         ~/.config/helix/config.toml
-  Helix theme    helix/themes/gruvbox_transparent.toml     ~/.config/helix/themes/…
-  WezTerm        wezterm/wezterm.lua                       ~/.wezterm.lua
-  Zsh            zsh/zshrc                                 ~/.zshrc
-  Zsh env        zsh/zshenv                                ~/.zshenv
-  Git            git/gitconfig                             ~/.gitconfig
-  Git (Toptal)   git/toptal.gitconfig                      ~/work/toptal/.gitconfig
-  SSH            ssh/config                                ~/.ssh/config
-  Claude         claude/CLAUDE.md                          ~/.claude/CLAUDE.md       (if present)
-  Claude         claude/settings.json                      ~/.claude/settings.json   (if present)
-  Claude         claude/agents/*                           ~/.claude/agents/*        (if any)
-  Claude         claude/commands/*                         ~/.claude/commands/*      (if any)
+  Config           Repo path                                  Home path
+  ───────────────────────────────────────────────────────────────────────────────
+  Helix            helix/config.toml                          ~/.config/helix/config.toml
+  Helix theme      helix/themes/gruvbox_transparent.toml      ~/.config/helix/themes/…
+  WezTerm          wezterm/wezterm.lua                        ~/.wezterm.lua
+  Zsh              zsh/zshrc                                  ~/.zshrc
+  Zsh env          zsh/zshenv                                 ~/.zshenv
+  Zsh profile      zsh/zprofile                               ~/.zprofile          (if present)
+  Git              git/gitconfig                              ~/.gitconfig
+  Git (Toptal)     git/toptal.gitconfig                       ~/work/toptal/.gitconfig
+  SSH              ssh/config                                 ~/.ssh/config
+  asdf versions    asdf/tool-versions                         ~/.tool-versions     (if present)
+  Claude           claude/CLAUDE.md                           ~/.claude/CLAUDE.md  (if present)
+  Claude           claude/settings.json                       ~/.claude/settings.json (if present)
+  Claude           claude/agents/*                            ~/.claude/agents/*   (per file)
+  Claude           claude/commands/*                          ~/.claude/commands/* (per file)
+  Claude skills    claude/skills/                             ~/.claude/skills/    (whole dir)
+  Claude plugins   claude/plugins/                            ~/.claude/plugins/   (whole dir)
 
 SECRETS
   ~/.zshrc.secrets is NOT tracked in git. It is sourced at the end of ~/.zshrc.
   A commented template is created on first run — fill in your tokens there.
 
-BREW
-  Install / reconcile packages on a new machine:
-    brew bundle --file="$DOTFILES_DIR/Brewfile"
-
 WORKFLOW
-  New machine:
+  ── New machine ──────────────────────────────────────────────────────────────
     git clone <repo> ~/work/dotfiles
     cd ~/work/dotfiles && ./sync.sh
     brew bundle --file=Brewfile
 
-  After editing a config on one Mac:
-    git add … && git commit && git push
+  ── After a month of work on one Mac ─────────────────────────────────────────
+    ./sync.sh export          # update Brewfile + tool-versions in repo
+    git add . && git commit && git push
 
-  Pick up changes on the other Mac:
+  ── Pick up on the other Mac ─────────────────────────────────────────────────
     git pull && ./sync.sh
 
 EOF
   exit 0
 }
 
-for arg in "$@"; do
-  case "$arg" in -h|--help) usage ;; esac
-done
+# ─── Subcommand dispatch ──────────────────────────────────────────────────────
+
+CMD="${1:-}"
+case "$CMD" in
+  export)  ;;           # handled below after helpers are defined
+  -h|--help) usage ;;
+  "")      ;;           # default: sync
+  *) echo "Unknown command: $CMD"; echo "Run ./sync.sh -h for help."; exit 1 ;;
+esac
 
 # ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -72,9 +85,14 @@ BACKED_UP=()
 LINKED=()
 SKIPPED=()
 
+# Link $1 (repo path) to $2 (home path).
+# Skips silently if the repo file/dir does not exist yet.
 link() {
   local src="$1"
   local dst="$2"
+
+  # Not in repo yet — skip. Will be linked after 'export' populates it.
+  [ -e "$src" ] || return 0
 
   mkdir -p "$(dirname "$dst")"
 
@@ -83,10 +101,8 @@ link() {
       SKIPPED+=("$dst")
       return
     fi
-    # Symlink exists but points somewhere else — fix it
-    rm "$dst"
+    rm "$dst"  # wrong target — fix it
   elif [ -e "$dst" ]; then
-    # Real file/dir — back it up before replacing
     mv "$dst" "${dst}.bak"
     BACKED_UP+=("${dst}.bak")
   fi
@@ -94,6 +110,33 @@ link() {
   ln -s "$src" "$dst"
   LINKED+=("$dst")
 }
+
+# ─── Export ───────────────────────────────────────────────────────────────────
+
+do_export() {
+  echo "Collecting artifacts into repo..."
+  echo ""
+
+  # Brewfile — always regenerate from current brew state
+  brew bundle dump --force --file="$DOTFILES_DIR/Brewfile" --quiet 2>/dev/null
+  echo "  ✓ Brewfile"
+
+  # asdf tool-versions — copy only if it's still a real file (not yet symlinked)
+  if [ -f "$HOME/.tool-versions" ] && [ ! -L "$HOME/.tool-versions" ]; then
+    mkdir -p "$DOTFILES_DIR/asdf"
+    cp "$HOME/.tool-versions" "$DOTFILES_DIR/asdf/tool-versions"
+    echo "  ✓ asdf/tool-versions"
+  fi
+
+  echo ""
+  echo "Review changes:  git diff $DOTFILES_DIR"
+  echo "Then commit:     git add . && git commit && git push"
+  echo "On other Mac:    git pull && ./sync.sh"
+  echo ""
+  exit 0
+}
+
+[ "$CMD" = "export" ] && do_export
 
 # ─── Helix ────────────────────────────────────────────────────────────────────
 
@@ -106,8 +149,9 @@ link "$DOTFILES_DIR/wezterm/wezterm.lua"  "$HOME/.wezterm.lua"
 
 # ─── Zsh ──────────────────────────────────────────────────────────────────────
 
-link "$DOTFILES_DIR/zsh/zshrc"   "$HOME/.zshrc"
-link "$DOTFILES_DIR/zsh/zshenv"  "$HOME/.zshenv"
+link "$DOTFILES_DIR/zsh/zshrc"     "$HOME/.zshrc"
+link "$DOTFILES_DIR/zsh/zshenv"    "$HOME/.zshenv"
+link "$DOTFILES_DIR/zsh/zprofile"  "$HOME/.zprofile"
 
 # ─── Git ──────────────────────────────────────────────────────────────────────
 
@@ -121,7 +165,14 @@ link "$DOTFILES_DIR/git/toptal.gitconfig"  "$HOME/work/toptal/.gitconfig"
 [ -d "$HOME/.ssh" ] || mkdir -m 700 "$HOME/.ssh"
 link "$DOTFILES_DIR/ssh/config"  "$HOME/.ssh/config"
 
+# ─── asdf ─────────────────────────────────────────────────────────────────────
+
+link "$DOTFILES_DIR/asdf/tool-versions"  "$HOME/.tool-versions"
+
 # ─── Claude ───────────────────────────────────────────────────────────────────
+# Individual files: CLAUDE.md, settings.json, agents/*, commands/*
+# Whole directories: skills/, plugins/ — so that tools installing into them
+# write directly into the repo (no manual export needed).
 
 CLAUDE_SRC="$DOTFILES_DIR/claude"
 CLAUDE_DST="$HOME/.claude"
@@ -137,6 +188,10 @@ for subdir in agents commands; do
     done
   fi
 done
+
+# Directory-level symlinks: installs via npx/claude go straight into the repo
+link "$CLAUDE_SRC/skills"   "$CLAUDE_DST/skills"
+link "$CLAUDE_SRC/plugins"  "$CLAUDE_DST/plugins"
 
 # ─── Secrets template (first run only) ────────────────────────────────────────
 
