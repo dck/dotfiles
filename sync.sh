@@ -46,7 +46,8 @@ SYNCED FILES
   Claude           claude/agents/*                            ~/.claude/agents/*   (per file)
   Claude           claude/commands/*                          ~/.claude/commands/* (per file)
   Claude skills    claude/skills/                             ~/.claude/skills/    (whole dir)
-  Claude plugins   claude/plugins/                            ~/.claude/plugins/   (whole dir)
+  Claude plugins   claude/plugins/marketplaces.txt            reinstalled via claude CLI on sync
+                   claude/plugins/plugins.txt
 
 SECRETS
   ~/.zshrc.secrets is NOT tracked in git. It is sourced at the end of ~/.zshrc.
@@ -128,12 +129,46 @@ do_export() {
     echo "  ✓ asdf/tool-versions"
   fi
 
+  # Claude marketplaces — write name:github-repo per line
+  if command -v claude &>/dev/null; then
+    python3 - <<'PY' "$DOTFILES_DIR/claude/plugins/marketplaces.txt"
+import json, sys
+path = "$HOME/.claude/plugins/known_marketplaces.json".replace("$HOME", __import__('os').environ['HOME'])
+out  = sys.argv[1]
+try:
+    data = json.load(open(path))
+    lines = []
+    for name, info in data.items():
+        src = info.get("source", {})
+        if src.get("source") == "github":
+            lines.append(f"{name}:{src['repo']}")
+    open(out, "w").write("\n".join(sorted(lines)) + "\n")
+    print(f"  ✓ claude/plugins/marketplaces.txt ({len(lines)} marketplaces)")
+except FileNotFoundError:
+    pass
+PY
+
+    # Claude plugins — write plugin@marketplace per line
+    python3 - <<'PY' "$DOTFILES_DIR/claude/plugins/plugins.txt"
+import json, sys
+path = "$HOME/.claude/plugins/installed_plugins.json".replace("$HOME", __import__('os').environ['HOME'])
+out  = sys.argv[1]
+try:
+    data = json.load(open(path))
+    plugins = sorted(data.get("plugins", {}).keys())
+    open(out, "w").write("\n".join(plugins) + "\n")
+    print(f"  ✓ claude/plugins/plugins.txt ({len(plugins)} plugins)")
+except FileNotFoundError:
+    pass
+PY
+  fi
+
   # Claude plugins — remove any accidentally-staged cache/marketplaces from git
   # index (they are nested git repos and must never be committed).
   git -C "$DOTFILES_DIR" rm -r --cached --force --quiet \
     claude/plugins/cache/ \
     claude/plugins/marketplaces/ \
-    2>/dev/null && echo "  ✓ claude/plugins: cleaned embedded repos from index" || true
+    2>/dev/null || true
 
   echo ""
   echo "Review changes:  git diff $DOTFILES_DIR"
@@ -196,9 +231,39 @@ for subdir in agents commands; do
   fi
 done
 
-# Directory-level symlinks: installs via npx/claude go straight into the repo
+# Directory-level symlink: installs via npx go straight into the repo
 link "$CLAUDE_SRC/skills"   "$CLAUDE_DST/skills"
-link "$CLAUDE_SRC/plugins"  "$CLAUDE_DST/plugins"
+
+# ─── Claude plugins — reinstall missing via claude CLI ────────────────────────
+# export writes marketplaces.txt + plugins.txt; sync reads them and installs
+# anything not already present. The runtime cache/marketplaces dirs are never
+# committed — they are re-created by the install commands.
+
+if command -v claude &>/dev/null; then
+  MARKETPLACES_FILE="$CLAUDE_SRC/plugins/marketplaces.txt"
+  PLUGINS_FILE="$CLAUDE_SRC/plugins/plugins.txt"
+
+  if [ -f "$MARKETPLACES_FILE" ]; then
+    while IFS=: read -r name repo; do
+      [ -z "$name" ] && continue
+      if ! claude plugin marketplace list 2>/dev/null | grep -q "^  ❯ $name\$\| $name$\|$name"; then
+        echo "  → Adding marketplace: $name ($repo)"
+        claude plugin marketplace add "github:$repo" 2>/dev/null || true
+      fi
+    done < "$MARKETPLACES_FILE"
+  fi
+
+  if [ -f "$PLUGINS_FILE" ]; then
+    INSTALLED=$(claude plugin list 2>/dev/null || true)
+    while read -r plugin; do
+      [ -z "$plugin" ] && continue
+      if ! echo "$INSTALLED" | grep -q "$plugin"; then
+        echo "  → Installing plugin: $plugin"
+        claude plugin install "$plugin" 2>/dev/null || true
+      fi
+    done < "$PLUGINS_FILE"
+  fi
+fi
 
 # ─── Secrets template (first run only) ────────────────────────────────────────
 
