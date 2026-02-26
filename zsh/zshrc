@@ -1,0 +1,54 @@
+export CLICOLOR=1
+export LSCOLORS=ExGxBxDxCxEgEdxbxgxcxd
+export WORDCHARS=''
+
+setopt prompt_subst
+
+setopt pushd_ignore_dups
+setopt pushd_to_home
+
+setopt complete_aliases
+setopt complete_in_word
+setopt glob_complete
+setopt NO_list_ambiguous
+setopt NO_list_beep
+
+setopt NO_hist_beep
+setopt hist_ignore_dups
+setopt hist_ignore_space
+setopt inc_append_history
+setopt share_history
+HISTSIZE=10000000
+SAVEHIST=10000000
+
+autoload -U compinit && compinit
+autoload -U colors && colors
+autoload -Uz vcs_info
+
+precmd() { vcs_info }
+zstyle ':vcs_info:git:*' formats ' (%b)'
+
+PROMPT='%{$fg[cyan]%}%n%{$reset_color%}@%{$fg[green]%}%m%{$reset_color%}: %{$fg[yellow]%}${PWD/#$HOME/~}%{$reset_color%}%{$fg[blue]%}${vcs_info_msg_0_}%{$reset_color%} $ '
+
+. /opt/homebrew/opt/asdf/libexec/asdf.sh
+. /opt/homebrew/Caskroom/gcloud-cli/latest/google-cloud-sdk/completion.zsh.inc
+. /opt/homebrew/Caskroom/gcloud-cli/latest/google-cloud-sdk/path.zsh.inc
+. "$HOME/.cargo/env"
+
+export LANG="en_US.UTF-8"
+export LC_MESSAGES="en_US.UTF-8"
+export GPG_TTY=$(tty)
+
+export PIP_REQUIRE_VIRTUALENV=true
+export CLAUDE_CODE_DISABLE_AUTO_MEMORY=0
+
+alias kubectl="kubecolor"
+alias prs='gh search prs --author @me --state=open --created=">=$(date -v-1m +%Y-%m-%d)" --json repository,title,url --template '\''{{range .}}{{printf "\033[36m%-38s\033[0m %-70s \033[33m%s\033[0m\n" .repository.nameWithOwner .title .url}}{{end}}'\'''
+
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /opt/homebrew/bin/bit bit
+export PATH="$HOME/.local/bin:$PATH"
+
+# Machine-specific secrets (tokens, API keys) — not tracked in git
+[ -f "$HOME/.zshrc.secrets" ] && source "$HOME/.zshrc.secrets"

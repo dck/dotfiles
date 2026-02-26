@@ -1,5 +1,5 @@
 [core]
-    editor = vim
+	editor = hx
 [user]
 	name = Denis Usanov
 	email = denis@usanov.info
@@ -19,3 +19,9 @@
 	textconv = sops -d
 [pull]
 	rebase = true
+[gpg]
+	format = ssh
+[commit]
+	gpgsign = true
+[tag]
+	gpgsign = true

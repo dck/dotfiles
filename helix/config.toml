@@ -1,0 +1,28 @@
+# We will create this custom transparent theme in the next step
+theme = "gruvbox_transparent"
+
+[editor]
+line-number = "relative"
+rulers = [50, 72]
+color-modes = true
+auto-pairs = true
+scroll-lines = 5
+
+[editor.cursor-shape]
+normal = "block"
+insert = "bar"
+select = "underline"
+
+[editor.indent-guides]
+render = true
+character = "│"
+
+[editor.statusline]
+left = ["mode", "file-name", "file-modification-indicator"]
+center = []
+right = ["selections", "position", "file-type"]
+
+[keys.normal]
+"C-s" = ":w"
+"C-q" = ":q"
+"Z" = { "Z" = ":write-quit", "Q" = ":quit!" }

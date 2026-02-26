@@ -85,9 +85,30 @@ return {
     -- Quick launcher (CMD+k for fuzzy finder)
     { key = 'k', mods = 'CMD', action = act.ShowLauncherArgs { flags = 'FUZZY|TABS|WORKSPACES' } },
 
+    -- Shift Enter for Claude Code
+    { key = 'Return', mods = 'SHIFT', action = act.SendString '\n' },
+    { key = 'Return', mods = 'CMD', action = act.SendString '\n' },
+
     -- Copy/Paste (native macOS)
     { key = 'c', mods = 'CMD', action = act.CopyTo 'Clipboard' },
     { key = 'v', mods = 'CMD', action = act.PasteFrom 'Clipboard' },
+
+    {
+      key = "LeftArrow",
+      mods = "OPT",
+      action = wezterm.action.SendKey {
+        key = "b",
+        mods = "ALT",
+      },
+    },
+    {
+      key = "RightArrow",
+      mods = "OPT",
+      action = wezterm.action.SendKey {
+        key = "f",
+        mods = "ALT",
+      },
+    },
   },
 
   enable_scroll_bar = false,

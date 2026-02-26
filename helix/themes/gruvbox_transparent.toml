@@ -1,0 +1,5 @@
+inherits = "gruvbox"
+
+"ui.background" = { fg = "fg1" }
+"ui.statusline" = { fg = "fg1", bg = "bg1" }
+"ui.statusline.inactive" = { fg = "fg3", bg = "bg1" }
