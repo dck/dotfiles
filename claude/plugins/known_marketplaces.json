@@ -1,0 +1,26 @@
+{
+  "superpowers-marketplace": {
+    "source": {
+      "source": "github",
+      "repo": "obra/superpowers-marketplace"
+    },
+    "installLocation": "/Users/deck/.claude/plugins/marketplaces/superpowers-marketplace",
+    "lastUpdated": "2026-02-26T09:34:36.134Z"
+  },
+  "claude-plugins-official": {
+    "source": {
+      "source": "github",
+      "repo": "anthropics/claude-plugins-official"
+    },
+    "installLocation": "/Users/deck/.claude/plugins/marketplaces/claude-plugins-official",
+    "lastUpdated": "2026-02-26T09:34:38.633Z"
+  },
+  "umputun-cc-thingz": {
+    "source": {
+      "source": "github",
+      "repo": "umputun/cc-thingz"
+    },
+    "installLocation": "/Users/deck/.claude/plugins/marketplaces/umputun-cc-thingz",
+    "lastUpdated": "2026-02-26T09:35:07.613Z"
+  }
+}

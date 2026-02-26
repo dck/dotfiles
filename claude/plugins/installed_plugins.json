@@ -1,0 +1,35 @@
+{
+  "version": 2,
+  "plugins": {
+    "superpowers@superpowers-marketplace": [
+      {
+        "scope": "user",
+        "installPath": "/Users/deck/.claude/plugins/cache/superpowers-marketplace/superpowers/4.3.1",
+        "version": "4.3.1",
+        "installedAt": "2026-02-26T09:34:48.449Z",
+        "lastUpdated": "2026-02-26T09:34:48.449Z",
+        "gitCommitSha": "e4a2375cb705ca5800f0833528ce36a3faf9017a"
+      }
+    ],
+    "brainstorm@umputun-cc-thingz": [
+      {
+        "scope": "user",
+        "installPath": "/Users/deck/.claude/plugins/cache/umputun-cc-thingz/brainstorm/2.0.0",
+        "version": "2.0.0",
+        "installedAt": "2026-02-26T09:35:40.285Z",
+        "lastUpdated": "2026-02-26T09:35:40.285Z",
+        "gitCommitSha": "9893572bc650c0f7fb1723dab5171717c79b3d77"
+      }
+    ],
+    "planning@umputun-cc-thingz": [
+      {
+        "scope": "user",
+        "installPath": "/Users/deck/.claude/plugins/cache/umputun-cc-thingz/planning/2.0.0",
+        "version": "2.0.0",
+        "installedAt": "2026-02-26T09:35:47.707Z",
+        "lastUpdated": "2026-02-26T09:35:47.707Z",
+        "gitCommitSha": "9893572bc650c0f7fb1723dab5171717c79b3d77"
+      }
+    ]
+  }
+}

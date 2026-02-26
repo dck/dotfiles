@@ -118,7 +118,7 @@ do_export() {
   echo ""
 
   # Brewfile — always regenerate from current brew state
-  brew bundle dump --force --file="$DOTFILES_DIR/Brewfile" --quiet 2>/dev/null
+  brew bundle dump --force --file="$DOTFILES_DIR/Brewfile" --quiet 2>&1 | grep -v "^[⠋⠙⠚⠞⠖⠦⠴⠲⠳⠓✔]" || true
   echo "  ✓ Brewfile"
 
   # asdf tool-versions — copy only if it's still a real file (not yet symlinked)
@@ -127,6 +127,13 @@ do_export() {
     cp "$HOME/.tool-versions" "$DOTFILES_DIR/asdf/tool-versions"
     echo "  ✓ asdf/tool-versions"
   fi
+
+  # Claude plugins — remove any accidentally-staged cache/marketplaces from git
+  # index (they are nested git repos and must never be committed).
+  git -C "$DOTFILES_DIR" rm -r --cached --force --quiet \
+    claude/plugins/cache/ \
+    claude/plugins/marketplaces/ \
+    2>/dev/null && echo "  ✓ claude/plugins: cleaned embedded repos from index" || true
 
   echo ""
   echo "Review changes:  git diff $DOTFILES_DIR"
