@@ -253,15 +253,32 @@ def sync_symlinks() -> None:
     # Claude skills — whole directory symlink
     link(claude_src / "skills", claude_dst / "skills")
 
+def _plugin_cache_ok(plugin: str) -> bool:
+    """Return True if the plugin's cache directory actually exists on disk."""
+    inst = HOME / ".claude" / "plugins" / "installed_plugins.json"
+    if not inst.exists():
+        return False
+    try:
+        data = json.loads(inst.read_text())
+        entries = data.get("plugins", {}).get(plugin, [])
+        return bool(entries) and Path(entries[0]["installPath"]).exists()
+    except (KeyError, IndexError, json.JSONDecodeError):
+        return False
+
 def sync_claude_plugins() -> None:
-    """Install any marketplace or plugin listed in the manifests that isn't present."""
+    """Install any marketplace or plugin listed in the manifests that isn't present
+    or whose cache directory is missing (registered but broken)."""
     if not shutil.which("claude"):
         return
 
     plugins_dir = DOTFILES / "claude" / "plugins"
+    mkt_file    = plugins_dir / "marketplaces.txt"
+    plug_file   = plugins_dir / "plugins.txt"
 
-    mkt_file  = plugins_dir / "marketplaces.txt"
-    plug_file = plugins_dir / "plugins.txt"
+    if not mkt_file.exists() and not plug_file.exists():
+        return
+
+    header("Claude plugins")
 
     if mkt_file.exists():
         existing_raw = run(["claude", "plugin", "marketplace", "list"]).stdout
@@ -275,18 +292,26 @@ def sync_claude_plugins() -> None:
                 r = run(["claude", "plugin", "marketplace", "add", f"github:{repo}"])
                 if r.returncode != 0:
                     err(f"Failed to add {name}: {r.stderr.strip()}")
+                else:
+                    ok(f"Marketplace added: {name}")
+            else:
+                skip(f"marketplace {name}")
 
     if plug_file.exists():
-        installed_raw = run(["claude", "plugin", "list"]).stdout
         for plugin in plug_file.read_text().splitlines():
             plugin = plugin.strip()
             if not plugin:
                 continue
-            if plugin not in installed_raw:
-                info(f"Installing plugin: {c(CYAN, plugin)}")
+            if _plugin_cache_ok(plugin):
+                skip(f"plugin {plugin}")
+            else:
+                # Either never installed or cache missing — (re)install
+                info(f"Installing: {c(CYAN, plugin)}")
                 r = run(["claude", "plugin", "install", plugin])
                 if r.returncode != 0:
                     err(f"Failed to install {plugin}: {r.stderr.strip()}")
+                else:
+                    ok(f"Installed: {plugin}")
 
 def ensure_secrets_template() -> None:
     secrets = HOME / ".zshrc.secrets"
