@@ -30,6 +30,16 @@
         "lastUpdated": "2026-02-26T09:35:47.707Z",
         "gitCommitSha": "9893572bc650c0f7fb1723dab5171717c79b3d77"
       }
+    ],
+    "skill-eval@umputun-cc-thingz": [
+      {
+        "scope": "user",
+        "installPath": "/Users/deck/.claude/plugins/cache/umputun-cc-thingz/skill-eval/1.0.0",
+        "version": "1.0.0",
+        "installedAt": "2026-02-26T09:59:01.187Z",
+        "lastUpdated": "2026-02-26T09:59:01.187Z",
+        "gitCommitSha": "9893572bc650c0f7fb1723dab5171717c79b3d77"
+      }
     ]
   }
 }

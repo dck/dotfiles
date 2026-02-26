@@ -3,6 +3,7 @@
 [user]
 	name = Denis Usanov
 	email = denis@usanov.info
+	signingkey = /Users/deck/.ssh/id_rsa.pub
 [push]
     default = simple
 
