@@ -13,6 +13,55 @@ wezterm.on('format-tab-title', function(tab, tabs, panes, config, hover, max_wid
   end
 end)
 
+local function basename(path)
+  return string.match(path, "([^/]+)$")
+end
+
+local function extract_project_from_path(path)
+  local home = os.getenv("HOME")
+  if not home then
+    return nil
+  end
+
+  -- Normalize
+  path = path:gsub("^file://", "")
+  path = path:gsub(home, "~")
+
+  -- ~/work/<project>
+  local direct = path:match("^~/work/([^/]+)")
+  if direct and direct ~= "toptal" then
+    return direct
+  end
+
+  -- ~/work/toptal/<project>
+  local toptal = path:match("^~/work/toptal/([^/]+)")
+  if toptal then
+    return toptal
+  end
+
+  return nil
+end
+
+wezterm.on("update-status", function(window, pane)
+  local cwd_uri = pane:get_current_working_dir()
+  if not cwd_uri then
+    return
+  end
+
+  local cwd = cwd_uri.file_path or tostring(cwd_uri)
+  local project = extract_project_from_path(cwd)
+
+  local tab = window:active_tab()
+
+  if project then
+    -- set project name
+    tab:set_title(project)
+  else
+    -- clear custom title (fallback to default numbering)
+    tab:set_title("")
+  end
+end)
+
 return {
   front_end = "WebGpu",
 
