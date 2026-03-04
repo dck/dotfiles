@@ -18,6 +18,7 @@ setopt hist_ignore_dups
 setopt hist_ignore_space
 setopt inc_append_history
 setopt share_history
+setopt GLOB_DOTS
 HISTSIZE=10000000
 SAVEHIST=10000000
 
@@ -41,6 +42,7 @@ export GPG_TTY=$(tty)
 
 export PIP_REQUIRE_VIRTUALENV=true
 export CLAUDE_CODE_DISABLE_AUTO_MEMORY=0
+export HOMEBREW_NO_ENV_HINTS=1
 
 alias kubectl="kubecolor"
 alias prs='gh search prs --author @me --state=open --created=">=$(date -v-1m +%Y-%m-%d)" --json repository,title,url --template '\''{{range .}}{{printf "\033[36m%-38s\033[0m %-70s \033[33m%s\033[0m\n" .repository.nameWithOwner .title .url}}{{end}}'\'''
@@ -49,6 +51,8 @@ export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /opt/homebrew/bin/bit bit
 export PATH="$HOME/.local/bin:$PATH"
+
+zstyle ':completion:*:*:git*:*:hosts' ignored-patterns 'orb'
 
 # Machine-specific secrets (tokens, API keys) — not tracked in git
 [ -f "$HOME/.zshrc.secrets" ] && source "$HOME/.zshrc.secrets"
