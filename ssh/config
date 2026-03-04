@@ -9,6 +9,10 @@ Include ~/.orbstack/ssh/config
 #    hostname example.com
 #    user joebloggs
 
+Host utumno
+    User deck
+    IdentityFile ~/.ssh/id_rsa_utumno
+
 Host *
     ServerAliveInterval 30
     ServerAliveCountMax 6
