@@ -50,6 +50,39 @@
         "lastUpdated": "2026-03-01T18:19:28.028Z",
         "gitCommitSha": "10193cc94a23eef680961f3787517a5b09d03899"
       }
+    ],
+    "team-agent-ops@toptal-maestro-playbooks": [
+      {
+        "scope": "project",
+        "installPath": "/Users/deck/.claude/plugins/cache/toptal-maestro-playbooks/team-agent-ops/07e3039c0d25",
+        "version": "07e3039c0d25",
+        "installedAt": "2026-03-04T20:15:20.445Z",
+        "lastUpdated": "2026-03-04T20:15:20.445Z",
+        "gitCommitSha": "07e3039c0d25fc9e7971e3937b8e72138991b660",
+        "projectPath": "/Users/deck/work/toptal/maestro"
+      }
+    ],
+    "individual-alexeyp@toptal-maestro-playbooks": [
+      {
+        "scope": "project",
+        "installPath": "/Users/deck/.claude/plugins/cache/toptal-maestro-playbooks/individual-alexeyp/07e3039c0d25",
+        "version": "07e3039c0d25",
+        "installedAt": "2026-03-04T20:15:20.454Z",
+        "lastUpdated": "2026-03-04T20:15:20.454Z",
+        "gitCommitSha": "07e3039c0d25fc9e7971e3937b8e72138991b660",
+        "projectPath": "/Users/deck/work/toptal/maestro"
+      }
+    ],
+    "individual-stefanobenatti@toptal-maestro-playbooks": [
+      {
+        "scope": "project",
+        "installPath": "/Users/deck/.claude/plugins/cache/toptal-maestro-playbooks/individual-stefanobenatti/07e3039c0d25",
+        "version": "07e3039c0d25",
+        "installedAt": "2026-03-04T20:15:20.484Z",
+        "lastUpdated": "2026-03-04T20:15:20.484Z",
+        "gitCommitSha": "07e3039c0d25fc9e7971e3937b8e72138991b660",
+        "projectPath": "/Users/deck/work/toptal/maestro"
+      }
     ]
   }
 }

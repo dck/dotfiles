@@ -81,6 +81,7 @@ HELP = f"""
   Zsh              zsh/zshrc                                  ~/.zshrc
   Zsh env          zsh/zshenv                                 ~/.zshenv
   Zsh profile      zsh/zprofile                               ~/.zprofile         (if present)
+  Zsh completions  (directory created if missing)             ~/.zsh/completions
   Git              git/gitconfig                              ~/.gitconfig
   Git (Toptal)     git/toptal.gitconfig                       ~/work/toptal/.gitconfig
   SSH              ssh/config                                 ~/.ssh/config
@@ -332,6 +333,12 @@ def ensure_secrets_template() -> None:
 """)
         ok(f"Created {c(YELLOW, '~/.zshrc.secrets')} — fill in your secrets")
 
+def ensure_zsh_completions_dir() -> None:
+    completions = HOME / ".zsh" / "completions"
+    if not completions.exists():
+        completions.mkdir(parents=True, exist_ok=True)
+        ok(f"Created {c(YELLOW, '~/.zsh/completions')}")
+
 def print_summary() -> None:
     if linked:
         header("Linked")
@@ -355,6 +362,7 @@ def print_summary() -> None:
 def cmd_sync() -> None:
     sync_symlinks()
     sync_claude_plugins()
+    ensure_zsh_completions_dir()
     ensure_secrets_template()
     print_summary()
 

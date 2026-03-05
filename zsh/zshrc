@@ -22,7 +22,10 @@ setopt GLOB_DOTS
 HISTSIZE=10000000
 SAVEHIST=10000000
 
-autoload -U compinit && compinit
+# custom completions
+fpath=("$HOME/.zsh/completions" $fpath)
+autoload -U compinit
+compinit
 autoload -U colors && colors
 autoload -Uz vcs_info
 
