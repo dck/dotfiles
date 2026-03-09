@@ -1,3 +1,4 @@
+claude-hud:jarrodwatts/claude-hud
 claude-plugins-official:anthropics/claude-plugins-official
 superpowers-marketplace:obra/superpowers-marketplace
 umputun-cc-thingz:umputun/cc-thingz

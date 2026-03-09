@@ -9,6 +9,10 @@ Include ~/.orbstack/ssh/config
 #    hostname example.com
 #    user joebloggs
 
+Host gothmog morgoth nazgul
+    User deck
+    IdentityFile ~/.ssh/id_rsa_vps
+
 Host utumno
     User deck
     IdentityFile ~/.ssh/id_rsa_utumno

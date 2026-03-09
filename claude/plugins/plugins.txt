@@ -1,4 +1,8 @@
 brainstorm@umputun-cc-thingz
+claude-hud@claude-hud
+individual-alexeyp@toptal-maestro-playbooks
+individual-stefanobenatti@toptal-maestro-playbooks
 planning@umputun-cc-thingz
 skill-eval@umputun-cc-thingz
 superpowers@superpowers-marketplace
+team-agent-ops@toptal-maestro-playbooks
