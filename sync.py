@@ -86,7 +86,7 @@ HELP = f"""
   Git (Toptal)     git/toptal.gitconfig                       ~/work/toptal/.gitconfig
   SSH              ssh/config                                 ~/.ssh/config
   asdf versions    asdf/tool-versions                         ~/.tool-versions    (if present)
-  Claude           claude/CLAUDE.md                           ~/.claude/CLAUDE.md (if present)
+  Claude           claude/CLAUDE.md, RTK.md                  ~/.claude/           (if present)
   Claude           claude/settings.json                       ~/.claude/settings.json
   Claude           claude/agents/*                            ~/.claude/agents/*
   Claude           claude/commands/*                          ~/.claude/commands/*
@@ -242,7 +242,7 @@ def sync_symlinks() -> None:
     # Claude — individual files
     claude_src = d / "claude"
     claude_dst = h / ".claude"
-    for fname in ("CLAUDE.md", "settings.json"):
+    for fname in ("CLAUDE.md", "RTK.md", "settings.json"):
         f = claude_src / fname
         if f.exists():
             link(f, claude_dst / fname)
