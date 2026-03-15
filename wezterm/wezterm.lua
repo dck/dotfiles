@@ -3,14 +3,23 @@ local act = wezterm.action
 
 local color_scheme = "GruvboxDarkHard"
 
+local tmux_color_bg = wezterm.color.parse("#5c4a4a")
+
 wezterm.on('format-tab-title', function(tab, tabs, panes, config, hover, max_width)
   local tab_number = tab.tab_index + 1
+  local is_tmux = (tab.active_pane and tab.active_pane.domain_name == "tmux")
 
-  if tab.tab_title and #tab.tab_title > 0 then
-    return '  ' .. tab_number .. ': ' .. tab.tab_title .. '  '
-  else
-    return '  ' .. tab_number .. '  '
+  local title = (tab.tab_title and #tab.tab_title > 0) and (': ' .. tab.tab_title) or ''
+  local text = '  ' .. tab_number .. title .. '  '
+
+  if is_tmux and not tab.is_active  then
+    return {
+      { Background = { Color = tmux_color_bg } },
+      { Text = text },
+    }
   end
+
+  return text
 end)
 
 local function basename(path)
@@ -43,6 +52,30 @@ local function extract_project_from_path(path)
 end
 
 wezterm.on("update-status", function(window, pane)
+  -- local domain = pane:get_domain_name()
+  -- local title = pane:get_title()
+  -- local cwd = pane:get_current_working_dir()
+  -- local proc = pane:get_foreground_process_info()
+
+  -- -- Create a string with the full breakdown
+  -- local info = string.format(
+  --   "\n--- PANE SNAPSHOT ---\n" ..
+  --   "Title:    %s\n" ..
+  --   "Domain:   %s\n" ..
+  --   "CWD:      %s\n" ..
+  --   "ProcName: %s\n" ..
+  --   "Args:     %s\n" ..
+  --   "---------------------",
+  --   title or "nil",
+  --   domain or "nil",
+  --   (cwd and cwd.file_path) or "nil",
+  --   (proc and proc.name) or "nil",
+  --   (proc and proc.argv and table.concat(proc.argv, " ")) or "none"
+  -- )
+
+  -- -- This will print to your debug overlay (Cmd+Shift+L)
+  -- wezterm.log_info(info)
+
   local cwd_uri = pane:get_current_working_dir()
   if not cwd_uri then
     return
@@ -94,6 +127,7 @@ return {
   leader = { key = 's', mods = 'CTRL', timeout_milliseconds = 1000 },
 
   keys = {
+    { key = 'd', mods = 'LEADER', action = wezterm.action.ShowDebugOverlay},
     -- Splitting (leader + - or |)
     { key = '-', mods = 'LEADER', action = act.SplitVertical { domain = 'CurrentPaneDomain' } },
     { key = '\\', mods = 'LEADER', action = act.SplitHorizontal { domain = 'CurrentPaneDomain' } },

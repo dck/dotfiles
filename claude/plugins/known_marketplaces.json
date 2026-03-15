@@ -13,7 +13,7 @@
       "repo": "anthropics/claude-plugins-official"
     },
     "installLocation": "/Users/deck/.claude/plugins/marketplaces/claude-plugins-official",
-    "lastUpdated": "2026-03-09T15:17:32.606Z"
+    "lastUpdated": "2026-03-13T12:34:51.639Z"
   },
   "umputun-cc-thingz": {
     "source": {
@@ -34,9 +34,17 @@
   "toptal-maestro-playbooks": {
     "source": {
       "source": "directory",
-      "path": "/Users/deck/work/toptal/maestro/.maestro/worktrees/autocompletion-dd2933f3"
+      "path": "/Users/deck/work/toptal/maestro"
     },
-    "installLocation": "/Users/deck/work/toptal/maestro/.maestro/worktrees/autocompletion-dd2933f3",
-    "lastUpdated": "2026-03-09T14:37:12.393Z"
+    "installLocation": "/Users/deck/work/toptal/maestro",
+    "lastUpdated": "2026-03-13T11:55:37.908Z"
+  },
+  "fullstack-dev-skills": {
+    "source": {
+      "source": "github",
+      "repo": "jeffallan/claude-skills"
+    },
+    "installLocation": "/Users/deck/.claude/plugins/marketplaces/fullstack-dev-skills",
+    "lastUpdated": "2026-03-10T08:41:36.045Z"
   }
 }

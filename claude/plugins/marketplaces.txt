@@ -1,4 +1,5 @@
 claude-hud:jarrodwatts/claude-hud
 claude-plugins-official:anthropics/claude-plugins-official
+fullstack-dev-skills:jeffallan/claude-skills
 superpowers-marketplace:obra/superpowers-marketplace
 umputun-cc-thingz:umputun/cc-thingz

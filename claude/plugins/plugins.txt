@@ -1,5 +1,6 @@
 brainstorm@umputun-cc-thingz
 claude-hud@claude-hud
+fullstack-dev-skills@fullstack-dev-skills
 individual-alexeyp@toptal-maestro-playbooks
 individual-stefanobenatti@toptal-maestro-playbooks
 planning@umputun-cc-thingz

@@ -54,34 +54,44 @@
     "team-agent-ops@toptal-maestro-playbooks": [
       {
         "scope": "project",
+        "projectPath": "/Users/deck/work/toptal/maestro",
         "installPath": "/Users/deck/.claude/plugins/cache/toptal-maestro-playbooks/team-agent-ops/07e3039c0d25",
         "version": "07e3039c0d25",
         "installedAt": "2026-03-04T20:15:20.445Z",
         "lastUpdated": "2026-03-04T20:15:20.445Z",
-        "gitCommitSha": "07e3039c0d25fc9e7971e3937b8e72138991b660",
-        "projectPath": "/Users/deck/work/toptal/maestro"
+        "gitCommitSha": "07e3039c0d25fc9e7971e3937b8e72138991b660"
       }
     ],
     "individual-alexeyp@toptal-maestro-playbooks": [
       {
         "scope": "project",
+        "projectPath": "/Users/deck/work/toptal/maestro",
         "installPath": "/Users/deck/.claude/plugins/cache/toptal-maestro-playbooks/individual-alexeyp/07e3039c0d25",
         "version": "07e3039c0d25",
         "installedAt": "2026-03-04T20:15:20.454Z",
         "lastUpdated": "2026-03-04T20:15:20.454Z",
-        "gitCommitSha": "07e3039c0d25fc9e7971e3937b8e72138991b660",
-        "projectPath": "/Users/deck/work/toptal/maestro"
+        "gitCommitSha": "07e3039c0d25fc9e7971e3937b8e72138991b660"
       }
     ],
     "individual-stefanobenatti@toptal-maestro-playbooks": [
       {
         "scope": "project",
+        "projectPath": "/Users/deck/work/toptal/maestro",
         "installPath": "/Users/deck/.claude/plugins/cache/toptal-maestro-playbooks/individual-stefanobenatti/07e3039c0d25",
         "version": "07e3039c0d25",
         "installedAt": "2026-03-04T20:15:20.484Z",
         "lastUpdated": "2026-03-04T20:15:20.484Z",
-        "gitCommitSha": "07e3039c0d25fc9e7971e3937b8e72138991b660",
-        "projectPath": "/Users/deck/work/toptal/maestro"
+        "gitCommitSha": "07e3039c0d25fc9e7971e3937b8e72138991b660"
+      }
+    ],
+    "fullstack-dev-skills@fullstack-dev-skills": [
+      {
+        "scope": "user",
+        "installPath": "/Users/deck/.claude/plugins/cache/fullstack-dev-skills/fullstack-dev-skills/0.4.10",
+        "version": "0.4.10",
+        "installedAt": "2026-03-10T08:41:46.447Z",
+        "lastUpdated": "2026-03-10T08:41:46.447Z",
+        "gitCommitSha": "3bf9a24b76a7c122f1fc05e83929fbc84e1c207a"
       }
     ]
   }
