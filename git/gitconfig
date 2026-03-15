@@ -11,6 +11,8 @@
     path = ~/work/toptal/.gitconfig
 [rebase]
     instructionFormat = [%<(14,trunc)%an] %s
+	updateRefs = true
+	autoStash = true
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
@@ -26,3 +28,5 @@
 	gpgsign = true
 [tag]
 	gpgsign = true
+[rerere]
+	enabled = true

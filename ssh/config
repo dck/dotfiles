@@ -17,6 +17,11 @@ Host utumno
     User deck
     IdentityFile ~/.ssh/id_rsa_utumno
 
+Host *.toptal.rocks
+  StrictHostKeyChecking no
+  UserKnownHostsFile /dev/null
+  User denis.usanov
+
 Host *
     ServerAliveInterval 30
     ServerAliveCountMax 6
