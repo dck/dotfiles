@@ -75,6 +75,7 @@ HELP = f"""
 {c(BOLD, 'SYNCED FILES')}
   {c(DIM, 'Config           Repo path                                  Home path')}
   {c(DIM, '─' * 79)}
+  Yazi             yazi/{{yazi,keymap,theme}}.toml              ~/.config/yazi/
   Helix            helix/config.toml                          ~/.config/helix/config.toml
   Helix theme      helix/themes/gruvbox_transparent.toml      ~/.config/helix/themes/…
   WezTerm          wezterm/wezterm.lua                        ~/.wezterm.lua
@@ -236,6 +237,9 @@ def sync_symlinks() -> None:
         ssh_dir.mkdir(mode=0o700)
     link(d / "ssh/config", ssh_dir / "config")
 
+    # Yazi
+    link_dir_files(d / "yazi", h / ".config/yazi")
+
     # asdf
     link(d / "asdf/tool-versions", h / ".tool-versions")
 
@@ -359,8 +363,26 @@ def print_summary() -> None:
     print(c(DIM, f"  brew bundle --file={DOTFILES}/Brewfile   ← install packages on a new machine"))
     print()
 
+def sync_yazi_flavors() -> None:
+    if not shutil.which("ya"):
+        return
+    flavor = "yazi-rs/flavors:gruvbox-dark"
+    flavor_dir = HOME / ".config/yazi/flavors/gruvbox-dark.yazi"
+    if flavor_dir.exists():
+        skip(f"yazi flavor {flavor}")
+        return
+    header("Yazi flavors")
+    info(f"Installing flavor: {c(CYAN, flavor)}")
+    r = run(["ya", "pkg", "add", flavor])
+    if r.returncode == 0:
+        ok(f"Installed: {flavor}")
+    else:
+        err(f"Failed to install {flavor}: {r.stderr.strip()}")
+
+
 def cmd_sync() -> None:
     sync_symlinks()
+    sync_yazi_flavors()
     sync_claude_plugins()
     ensure_zsh_completions_dir()
     ensure_secrets_template()

@@ -55,6 +55,10 @@ autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /opt/homebrew/bin/bit bit
 export PATH="$HOME/.local/bin:$PATH"
 
+ls() {
+    command eza "$@"
+}
+
 zstyle ':completion:*:*:git*:*:hosts' ignored-patterns 'orb'
 
 # Machine-specific secrets (tokens, API keys) — not tracked in git
