@@ -21,17 +21,37 @@
 
 ---
 
+## Implementation Standards
+
+- When implementing from a spec, schema, or ticket, read ALL required fields and constraints before writing code. Do not submit a first pass that is missing required keys or fields.
+
+---
+
 ## Workflow
 
 - Read project `docs/` and `CLAUDE.md` before making architectural decisions.
 - Ask for clarification on vague requests — don't interpret generously and build the wrong thing.
+- Always run linters and formatters (clippy, cargo fmt, rubocop, etc.) before committing or pushing code. Never skip this step even if you think the code is clean.
 
 ---
 
-## Git
+## Debugging & Bug Fixes
 
+- When fixing bugs or flaky tests, find and fix the root cause. Never apply defensive hacks or workarounds without explicitly stating the tradeoff and getting user approval.
+
+---
+
+## Git Workflow
+
+- Before starting work, confirm which branch to work on. Ask if unclear. Do not assume based on recent activity.
 - Use conventional commit messages (e.g., `fix:`, `feat:`, `refactor:`).
 - Keep commits atomic — one logical change per commit.
+
+---
+
+## Rust
+
+- When working on Rust projects: always run `cargo clippy` and `cargo fmt` after changes. Pay attention to `Path` vs `PathBuf` borrow semantics — needless borrow issues with these types have recurred multiple times.
 
 ---
 
