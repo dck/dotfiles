@@ -103,7 +103,7 @@ return {
 
   font = wezterm.font_with_fallback({
     "Iosevka Term",
-    "Symbols Nerd Font",
+    { family = "Symbols Nerd Font", scale = 0.75 },
   }),
   font_size = 16.0,
 

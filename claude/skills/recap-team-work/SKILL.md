@@ -1,6 +1,6 @@
 ---
 name: recap-team-work
-description: Use when the user wants to catch up on what they missed, needs a team activity summary, or asks what happened while they were away. Triggers on "recap", "catch up", "what did I miss", "what happened", "team update", "summary of work".
+description: Manual-only skill. Do NOT auto-invoke. Only runs when user explicitly types /recap-team-work command.
 ---
 
 # Recap Team Work
