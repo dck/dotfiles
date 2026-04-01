@@ -1,0 +1,4 @@
+[[mgr.prepend_keymap]]
+on   = "<Enter>"
+run  = ["enter", "open"]
+desc = "Enter dir or open file"

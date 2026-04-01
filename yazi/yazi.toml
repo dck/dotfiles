@@ -1,0 +1,12 @@
+[opener]
+edit = [
+  { run = 'hx "$@"', desc = "Helix", block = true },
+]
+folder = [
+  { run = 'true', desc = "Navigate" },
+]
+
+[open]
+prepend_rules = [
+  { url = "*/", use = ["folder"] },
+]

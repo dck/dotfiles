@@ -46,6 +46,8 @@
 - Before starting work, confirm which branch to work on. Ask if unclear. Do not assume based on recent activity.
 - Use conventional commit messages (e.g., `fix:`, `feat:`, `refactor:`).
 - Keep commits atomic — one logical change per commit.
+- **Never add `Co-Authored-By: Claude` lines to commits.** No Claude attribution in commits, ever.
+- **Never add "Generated with Claude Code" or similar badges/footers to PR descriptions.** No Claude attribution in PRs, ever.
 
 ---
 
