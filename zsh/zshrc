@@ -61,5 +61,7 @@ ls() {
 
 zstyle ':completion:*:*:git*:*:hosts' ignored-patterns 'orb'
 
+eval "$(atuin init zsh --disable-up-arrow)"
+
 # Machine-specific secrets (tokens, API keys) — not tracked in git
 [ -f "$HOME/.zshrc.secrets" ] && source "$HOME/.zshrc.secrets"

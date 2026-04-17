@@ -32,6 +32,7 @@
 - Read project `docs/` and `CLAUDE.md` before making architectural decisions.
 - Ask for clarification on vague requests — don't interpret generously and build the wrong thing.
 - Always run linters and formatters (clippy, cargo fmt, rubocop, etc.) before committing or pushing code. Never skip this step even if you think the code is clean.
+- **Plans and working docs go to `.ctx/plans/`, not `docs/plans/`.** The `.ctx/` directory is gitignored and is the home for implementation plans, design docs, and other Claude working artifacts. Override any skill that says `docs/plans/`.
 
 ---
 

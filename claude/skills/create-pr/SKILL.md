@@ -94,6 +94,9 @@ Write a PR title and body in Markdown.
 Use this structure and omit sections that do not apply.
 
 ```md
+<!-- Only if there are linked issues -->
+[PROJ-123]
+
 ## Summary
 
 - What changed
@@ -112,13 +115,6 @@ Use this structure and omit sections that do not apply.
 
 - Automated: `...`
 - Manual: `...`
-
-## Linked Issues
-
-<!-- Only if there are linked issues -->
-
-- Fixes #123
-- Relates to PROJ-123
 
 ## Screenshots
 
@@ -153,13 +149,19 @@ If the user asked to open or update the PR and `gh` is available:
 
 2. If none exists, create one:
    ```sh
-   gh pr create --base <base_branch> --title "<title>" --body "<body>"
+   gh pr create --base <base_branch> --title "<title>" --body "$(cat <<'PREOF'
+<body>
+PREOF
+)"
    ```
    Add `--draft` if the user asked for a draft PR.
 
 3. If one exists, update it:
    ```sh
-   gh pr edit <pr_number> --title "<title>" --body "<body>"
+   gh pr edit <pr_number> --title "<title>" --body "$(cat <<'PREOF'
+<body>
+PREOF
+)"
    ```
 
 4. Return the PR URL if GitHub provides one.
@@ -170,3 +172,4 @@ If the user asked to open or update the PR and `gh` is available:
 - Never dump the full diff into the PR body.
 - Never keep empty template sections.
 - Never turn the PR into an architecture review or incident report.
+- Never escape backticks in the PR body. The `<<'PREOF'` heredoc is single-quoted — backticks inside are literal characters. Write `` `foo` `` not `` \`foo\` ``.
