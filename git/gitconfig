@@ -1,5 +1,6 @@
 [core]
 	editor = hx
+	attributesFile = /Users/deck/.gitattributes
 [user]
 	name = Denis Usanov
 	email = denis@usanov.info
@@ -30,3 +31,12 @@
 	gpgsign = true
 [rerere]
 	enabled = true
+[merge "weave"]
+	name = weave merge driver
+	driver = weave merge %O %A %B %L %P
+[credential "https://github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
