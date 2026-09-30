@@ -2,6 +2,21 @@
 
 # Global Claude Code Configuration
 
+## Memory — brain-mcp only
+
+Use `mcp__brain-mcp__*` for all persistent memory. Never write `.md` files
+under `~/.claude/projects/*/memory/` and never maintain `MEMORY.md`.
+
+- `memory_search` — run at the START of every session/task (search the project name + task keywords) BEFORE acting, not only for explicit recall questions. Standing preferences and prior decisions live here (PR-workflow rules, conventions, past mistakes); acting without searching repeats them.
+- `memory_store` — store non-trivial conclusions with the right `category`
+  (procedures / decisions / learnings / concepts) and tags. Set `project`
+  for project-scoped memories; omit for cross-project.
+- `memory_update` — correct existing entries (search first).
+
+Schemas are deferred — load with `ToolSearch query="select:mcp__brain-mcp__memory_search,mcp__brain-mcp__memory_store"` before first use.
+
+---
+
 ## Communication
 
 - Be direct and concise. No preamble, no "Great question!", no filler.
@@ -9,6 +24,7 @@
 - When presenting options, use a numbered list with a clear recommendation.
 - When something is unclear or has multiple valid approaches, ask — don't assume.
 - Show understanding through correct action, not acknowledgment phrases.
+- **Always render GitHub PR/issue references as markdown links** (`https://github.com/<owner>/<repo>/pull/<n>`), never bare `#1234`. Applies to every mention — inline and in tables.
 
 ---
 
@@ -18,12 +34,16 @@
 - **Minimum viable change.** Do exactly what was asked — nothing more. No extra refactors, no "while I'm here" improvements.
 - **No over-engineering.** Three similar lines beat a premature abstraction. Don't design for hypothetical future requirements.
 - **Error handling follows existing patterns.** Don't add error handling beyond what the codebase already does unless asked.
+- **Prefer existing dependencies.** Do not add a new library if the standard library or an existing project dependency already solves the problem well enough. If a new dependency is necessary, state why.
+- **Protect public contracts.** Preserve public APIs, CLI behavior, config formats, and data contracts unless the user explicitly asks for a breaking change. If a breaking change is unavoidable, call it out clearly.
+- **No comments.** Code is self documenting. Avoid comments by any means. Even if you feel you need to add a comment, avoid it.
 
 ---
 
 ## Implementation Standards
 
 - When implementing from a spec, schema, or ticket, read ALL required fields and constraints before writing code. Do not submit a first pass that is missing required keys or fields.
+- Do not leave placeholder work behind unless explicitly requested. Avoid TODOs, stubs, temporary flags, and half-implemented branches.
 
 ---
 
@@ -31,6 +51,7 @@
 
 - Read project `docs/` and `CLAUDE.md` before making architectural decisions.
 - Ask for clarification on vague requests — don't interpret generously and build the wrong thing.
+- Test what you change. Run the narrowest relevant checks first, then broader validation if needed. Do not claim success unless you actually ran the relevant checks; if you could not run them, say so explicitly.
 - Always run linters and formatters (clippy, cargo fmt, rubocop, etc.) before committing or pushing code. Never skip this step even if you think the code is clean.
 - **Plans and working docs go to `.ctx/plans/`, not `docs/plans/`.** The `.ctx/` directory is gitignored and is the home for implementation plans, design docs, and other Claude working artifacts. Override any skill that says `docs/plans/`.
 
@@ -45,10 +66,9 @@
 ## Git Workflow
 
 - Before starting work, confirm which branch to work on. Ask if unclear. Do not assume based on recent activity.
+- Ask before destructive, irreversible, or external-impact actions such as deleting data, rewriting history, changing production config, or running migrations.
 - Use conventional commit messages (e.g., `fix:`, `feat:`, `refactor:`).
 - Keep commits atomic — one logical change per commit.
-- **Never add `Co-Authored-By: Claude` lines to commits.** No Claude attribution in commits, ever.
-- **Never add "Generated with Claude Code" or similar badges/footers to PR descriptions.** No Claude attribution in PRs, ever.
 
 ---
 
@@ -63,6 +83,12 @@
 - Don't explain what you just did unless the change is non-obvious.
 - Don't summarize files you've read back to me.
 - When showing code, show only the changed parts with minimal context.
+
+---
+
+## Security
+
+- Respect security boundaries. Never print, store, or paste secrets, tokens, private keys, or full credentials into code, logs, examples, or diffs. Redact sensitive values by default.
 
 ---
 

@@ -23,7 +23,7 @@ HISTSIZE=10000000
 SAVEHIST=10000000
 
 # custom completions
-fpath=("$HOME/.zsh/completions" $fpath)
+fpath=("$HOME/.zsh/completions" ${ASDF_DATA_DIR:-$HOME/.asdf}/completions $fpath)
 autoload -U compinit
 compinit
 autoload -U colors && colors
@@ -34,7 +34,7 @@ zstyle ':vcs_info:git:*' formats ' (%b)'
 
 PROMPT='%{$fg[cyan]%}%n%{$reset_color%}@%{$fg[green]%}%m%{$reset_color%}: %{$fg[yellow]%}${PWD/#$HOME/~}%{$reset_color%}%{$fg[blue]%}${vcs_info_msg_0_}%{$reset_color%} $ '
 
-. /opt/homebrew/opt/asdf/libexec/asdf.sh
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 . /opt/homebrew/Caskroom/gcloud-cli/latest/google-cloud-sdk/completion.zsh.inc
 . /opt/homebrew/Caskroom/gcloud-cli/latest/google-cloud-sdk/path.zsh.inc
 . "$HOME/.cargo/env"
@@ -51,6 +51,7 @@ alias kubectl="kubecolor"
 alias prs='gh search prs --author @me --state=open --created=">=$(date -v-1m +%Y-%m-%d)" --json repository,title,url --template '\''{{range .}}{{printf "\033[36m%-38s\033[0m %-70s \033[33m%s\033[0m\n" .repository.nameWithOwner .title .url}}{{end}}'\'''
 
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+export PATH="/Users/deck/.bun/bin:$PATH"
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /opt/homebrew/bin/bit bit
 export PATH="$HOME/.local/bin:$PATH"
@@ -65,3 +66,6 @@ eval "$(atuin init zsh --disable-up-arrow)"
 
 # Machine-specific secrets (tokens, API keys) — not tracked in git
 [ -f "$HOME/.zshrc.secrets" ] && source "$HOME/.zshrc.secrets"
+
+# Added by codebase-memory-mcp install
+export PATH="/Users/deck/.local/bin:$PATH"
