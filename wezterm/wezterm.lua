@@ -138,28 +138,6 @@ return {
     { key = 'c', mods = 'CMD', action = act.CopyTo 'Clipboard' },
     { key = 'v', mods = 'CMD', action = act.PasteFrom 'Clipboard' },
     {
-      key = "s",
-      mods = "LEADER",
-      action = wezterm.action_callback(function(window, pane)
-        -- split current pane into top/bottom
-        local bottom = pane:split({
-          direction = "Bottom",
-          size = 0.5,
-        })
-
-        -- split the bottom pane into left/right
-        local right = bottom:split({
-          direction = "Right",
-          size = 0.5,
-        })
-
-        -- run commands
-        pane:send_text("claude\n")
-        bottom:send_text("lazygit\n")
-        -- right pane stays as console
-      end),
-    },
-    {
       key = "LeftArrow",
       mods = "OPT",
       action = wezterm.action.SendKey {
