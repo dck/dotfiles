@@ -1,175 +1,164 @@
 ---
 name: create-pr
-description: Use when the user asks to create a PR, draft a PR description, open a pull request, or summarize the current branch for review. Triggers on phrases like "PR", "pull request", "draft PR", "open PR", and "PR description".
+description: Draft, update, or open a pull request from the current branch. Use when asked to create a PR, write or revise a PR description, summarize branch changes for review, or open a draft PR on GitHub. Opens with a plain-English why, then headed sections for detail.
 ---
 
 # Create Pull Request
 
-Draft or create a pull request that is easy for a human reviewer to scan.
+A PR description has two jobs, in this order:
 
-## Goal
+1. Convince a human, in under thirty seconds and without asking anyone, that this
+   change should happen.
+2. Give a reviewer the few facts the diff does not show.
 
-Produce a concise PR title and body grounded in the actual diff, commit history, and repo conventions.
+Job one is the opening paragraph. Job two is everything under the headings.
 
-If the user wants the PR opened and `gh` is available, create or update it.
-
-## Principles
-
-- Optimize for reviewer comprehension, not process theater.
-- Prefer short sections and bullets over long prose.
-- Include only sections that apply.
-- Do not invent testing, issue links, rollout steps, or follow-up work.
-- Match the repository's existing PR title style. If the repo uses conventional commits, follow that pattern.
-
-## Gather Context
-
-Use terminal commands to inspect the branch before writing anything. Use `--no-pager` for git commands.
-
-1. Current branch:
-   ```sh
-   git branch --show-current
-   ```
-
-2. Base branch:
-   ```sh
-   BASE_BRANCH=$(git --no-pager remote show origin 2>/dev/null | sed -n 's/.*HEAD branch: //p')
-   ```
-   If that fails, set `BASE_BRANCH` to a reasonable local default such as `main`, `master`, or `develop`.
-
-3. Merge base:
-   ```sh
-   MERGE_BASE=$(git merge-base HEAD "$BASE_BRANCH")
-   ```
-
-4. Diff summary:
-   ```sh
-   git --no-pager diff --stat "$MERGE_BASE"..HEAD
-   git --no-pager diff --shortstat "$MERGE_BASE"..HEAD
-   ```
-   Use `git diff` here, not `gh pr diff`; GitHub CLI does not support `--stat` or `--shortstat` on `gh pr diff`.
-
-5. Commit history:
-   ```sh
-   git --no-pager log "$MERGE_BASE"..HEAD --oneline --no-decorate
-   ```
-
-6. Code changes:
-   ```sh
-   git --no-pager diff "$MERGE_BASE"..HEAD
-   ```
-   If the diff is too large to read comfortably, inspect the most important files individually instead of dumping everything.
-
-7. Optional GitHub context when `gh` is available:
-   ```sh
-   gh pr view --json number,title,state,url 2>/dev/null || true
-   gh repo view --json name,description,defaultBranchRef 2>/dev/null || true
-   ```
-
-## What to Infer
-
-From the diff and commits, determine only what is useful for the PR:
-
-- The main purpose of the change
-- Why the change was made
-- The major code paths, modules, or surfaces touched
-- Whether tests were added, updated, or only run manually
-- Whether there are user-facing changes, operational steps, or follow-ups worth calling out
-- Any linked issue IDs mentioned in the branch name, commits, or user request
-
-Do not force a risk matrix, blast-radius section, migration section, or bug root-cause write-up unless the change clearly needs it.
-
-## Output
-
-Write a PR title and body in Markdown.
-
-### Title
-
-- Keep it short and specific.
-- Use imperative mood.
-- Follow repo style.
-- If the repo uses conventional commit titles, use: `type(scope): summary`.
-
-### Body Template
-
-Use this structure and omit sections that do not apply.
+## The shape
 
 ```md
-<!-- Only if there are linked issues -->
-[PROJ-123]
+[PROJ-123](https://<jira-host>/browse/PROJ-123)
 
-## Summary
+<Why. Plain English. No heading above it. 2–5 short sentences.>
 
-- What changed
-- Why it changed
-- Expected impact
+## What changed
 
-## Changes
+<Behaviour, not mechanics. A short paragraph or 2–4 bullets.>
 
-- Key implementation change
-- Key implementation change
-- Key implementation change
-
-## Testing
-
-<!-- Only if makes sense to mention testing -->
-
-- Automated: `...`
-- Manual: `...`
-
-## Screenshots
-
-<!-- Only for UI changes -->
-
-## Deployment Notes
-
-<!-- Only when rollout, config, migrations, or ordering matter -->
-
-## Follow-ups
-
-<!-- Only when intentionally deferred work should be visible to reviewers -->
+## <Optional sections — only the ones that carry content>
 ```
 
-## Writing Rules
+The opening paragraph is **never** under a heading and **always** the first thing
+after the ticket line. A reader who stops there must still understand the point.
 
-- Lead with the most important change.
-- Keep each bullet concrete and technical.
-- Prefer filenames or subsystems when they help reviewers navigate.
-- If testing was not run, say that plainly.
-- If there is no linked issue, omit the section.
-- If the change is trivial, shorten the body instead of filling space.
+## The ticket line
 
-## Creating or Updating the PR
+When a Jira key is known — from the branch name, commit subjects, or the user — the
+first line of the body is a markdown link to it and nothing else:
+`[PROJ-123](https://<jira-host>/browse/PROJ-123)`. Take the Jira host
+from the repo's docs or `AGENTS.md`; if none names it, ask. Several keys go on that
+same line, space-separated. No key, no ticket line — the body starts with the why.
 
-If the user asked to open or update the PR and `gh` is available:
+## The opening paragraph is the whole job
 
-1. Check for an existing PR:
-   ```sh
-   gh pr view --json number,url 2>/dev/null
-   ```
+It answers **why are we doing this**, and it is read by people whose first language
+is not English.
 
-2. If none exists, create one:
-   ```sh
-   gh pr create --base <base_branch> --title "<title>" --body "$(cat <<'PREOF'
-<body>
-PREOF
-)"
-   ```
-   Add `--draft` if the user asked for a draft PR.
+- Short sentences. One idea each. Under 20 words where you can.
+- Say what was wrong, or what someone could not do, in ordinary words.
+- Lead with the consequence a person felt, not the mechanism. "Every prompt was
+  recorded without the user's id, so we cannot tell who is using Chat" — not
+  "the annotation was read from the wrong object".
+- **No code identifiers, file paths, function names, or type names.** None.
+- No jargon a new joiner would look up. If a domain word is unavoidable, spend three
+  words explaining it.
+- No history of how it was found, who found it, or which review caught it.
 
-3. If one exists, update it:
-   ```sh
-   gh pr edit <pr_number> --title "<title>" --body "$(cat <<'PREOF'
-<body>
-PREOF
-)"
-   ```
+Read it back and ask: would a competent engineer who has never opened this repo know
+why we are spending time on this? If not, rewrite it.
 
-4. Return the PR URL if GitHub provides one.
+## Headings carry the detail
+
+Use `##` headings. Keep each section to what a reviewer actually needs.
+
+**`## What changed`** — always present. Behaviour first; a symbol or file name is
+fine here when it genuinely locates the change. Bullets are good when there are
+several independent changes; prose is better for one.
+
+Then any of these that carry real content, in this order:
+
+- **`## Why this way`** — only when a reviewer would reasonably propose a different
+  approach. State the alternative and the one reason it loses. Two or three sentences.
+- **`## Testing`** — what a reviewer must do to see it work, or what pins the
+  behaviour. Name the tests that matter and what they hold. Do not paste command
+  output or counts of passing tests.
+- **`## Scope`** — what this deliberately does not touch, and why that is safe. This
+  is the section that stops a reviewer asking "did you check X?". Strong when a
+  defect class could plausibly exist elsewhere and you checked.
+- **`## Merge notes`** — deploy order, migration compatibility, breaking changes,
+  a flag that must be flipped first. Only when merging carries a real constraint.
+- **`## Follow-ups`** — the ticket that owns the rest. One line each.
+
+Omit every heading that would hold filler. An empty or padded section costs more
+than a missing one.
+
+## Length
+
+- Opening paragraph: 2–5 sentences.
+- Whole body: aim for **under 400 words**. Past that, a reviewer skims and the
+  opening paragraph stops working.
+- If it will not fit, the change is probably too big for one PR. Say so rather than
+  compressing the why.
+
+## Never put in the body
+
+- Command transcripts, test counts, timing numbers, or any tool output.
+- A restatement of the diff, file by file.
+- Rejected alternatives beyond the single one `## Why this way` names.
+- Code blocks, unless the change *is* a config value or a contract line a reviewer
+  must eyeball.
+- A ticked checklist.
+- Any claim you have not verified in the code.
+
+## Repo templates
+
+Check `.github/PULL_REQUEST_TEMPLATE.md` and `CONTRIBUTING.md`.
+
+If a template exists, keep the headings that carry content and delete the rest — and
+put the plain-English why above the first heading even when the template does not ask
+for it. A `## Summary` / `## Changes` / `## Testing` / `## Checklist` template maps to:
+the why paragraph above `## Summary`, `## Changes` merged into it, `## Testing` per the
+rule above, `## Checklist` dropped.
+
+If the repository's written rules require the template kept whole, keep it, still obey
+the length guidance, then tell the user the two rules conflict and which you followed.
+
+## Gather context first
+
+Use `--no-pager` on git commands.
+
+```sh
+git branch --show-current
+BASE_BRANCH=$(git --no-pager remote show origin 2>/dev/null | sed -n 's/.*HEAD branch: //p')
+MERGE_BASE=$(git merge-base HEAD "${BASE_BRANCH:-main}")
+git --no-pager log "$MERGE_BASE"..HEAD --oneline --no-decorate
+git --no-pager diff --stat "$MERGE_BASE"..HEAD
+```
+
+Read the diff of the important files. The **why** usually is not in the diff — take it
+from the ticket, the commit messages, or the user. If you cannot state the why from
+evidence, ask rather than invent one.
+
+## Title
+
+- `type(scope): summary [TICKET]` if the repo uses conventional commits, else a short
+  imperative line.
+- Match the repo's existing titles.
+- The title says what changed; the why lives in the body.
+
+## Open or update
+
+```sh
+gh pr view --json number,url 2>/dev/null
+gh pr create --base "$BASE_BRANCH" --title "$TITLE" --body-file <path>
+gh pr edit <n> --title "$TITLE" --body-file <path>
+```
+
+Use `--body-file`, not `--body` — a heredoc through `--body` mangles blank lines.
+Add `--draft` only if asked. Return the URL.
+
+## Before you post
+
+Read the body once as if you had no context:
+
+1. Does the opening paragraph say why, in words a non-native speaker reads once?
+2. Is every code identifier out of that paragraph?
+3. Does every heading carry something the diff does not show?
+4. Under 400 words?
+
+Fix, then post.
 
 ## Never
 
-- Never fabricate context that is not in the diff, commits, or user prompt.
-- Never dump the full diff into the PR body.
-- Never keep empty template sections.
-- Never turn the PR into an architecture review or incident report.
-- Never escape backticks in the PR body. The `<<'PREOF'` heredoc is single-quoted — backticks inside are literal characters. Write `` `foo` `` not `` \`foo\` ``.
+- Never mark a PR ready for review unless asked.
+- Never open a PR the user has not asked you to open.
+- Never fabricate a why.
