@@ -5,23 +5,6 @@ local color_scheme = "GruvboxDark"
 
 local tmux_color_bg = wezterm.color.parse("#5c4a4a")
 
-wezterm.on('format-tab-title', function(tab, tabs, panes, config, hover, max_width)
-  local tab_number = tab.tab_index + 1
-  local is_tmux = (tab.active_pane and tab.active_pane.domain_name == "tmux")
-
-  local title = (tab.tab_title and #tab.tab_title > 0) and (': ' .. tab.tab_title) or ''
-  local text = '  ' .. tab_number .. title .. '  '
-
-  if is_tmux and not tab.is_active  then
-    return {
-      { Background = { Color = tmux_color_bg } },
-      { Text = text },
-    }
-  end
-
-  return text
-end)
-
 local function basename(path)
   return string.match(path, "([^/]+)$")
 end
@@ -51,48 +34,27 @@ local function extract_project_from_path(path)
   return nil
 end
 
-wezterm.on("update-status", function(window, pane)
-  -- local domain = pane:get_domain_name()
-  -- local title = pane:get_title()
-  -- local cwd = pane:get_current_working_dir()
-  -- local proc = pane:get_foreground_process_info()
+wezterm.on('format-tab-title', function(tab, tabs, panes, config, hover, max_width)
+  local tab_number = tab.tab_index + 1
+  local is_tmux = (tab.active_pane and tab.active_pane.domain_name == "tmux")
 
-  -- -- Create a string with the full breakdown
-  -- local info = string.format(
-  --   "\n--- PANE SNAPSHOT ---\n" ..
-  --   "Title:    %s\n" ..
-  --   "Domain:   %s\n" ..
-  --   "CWD:      %s\n" ..
-  --   "ProcName: %s\n" ..
-  --   "Args:     %s\n" ..
-  --   "---------------------",
-  --   title or "nil",
-  --   domain or "nil",
-  --   (cwd and cwd.file_path) or "nil",
-  --   (proc and proc.name) or "nil",
-  --   (proc and proc.argv and table.concat(proc.argv, " ")) or "none"
-  -- )
-
-  -- -- This will print to your debug overlay (Cmd+Shift+L)
-  -- wezterm.log_info(info)
-
-  local cwd_uri = pane:get_current_working_dir()
-  if not cwd_uri then
-    return
+  local name = tab.tab_title
+  if not name or #name == 0 then
+    local cwd = tab.active_pane and tab.active_pane.current_working_dir
+    name = cwd and extract_project_from_path(cwd.file_path) or ''
   end
 
-  local cwd = cwd_uri.file_path or tostring(cwd_uri)
-  local project = extract_project_from_path(cwd)
+  local title = (#name > 0) and (': ' .. name) or ''
+  local text = '  ' .. tab_number .. title .. '  '
 
-  local tab = window:active_tab()
-
-  if project then
-    -- set project name
-    tab:set_title(project)
-  else
-    -- clear custom title (fallback to default numbering)
-    tab:set_title("")
+  if is_tmux and not tab.is_active  then
+    return {
+      { Background = { Color = tmux_color_bg } },
+      { Text = text },
+    }
   end
+
+  return text
 end)
 
 return {

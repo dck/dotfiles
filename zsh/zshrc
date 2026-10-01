@@ -30,6 +30,9 @@ autoload -U colors && colors
 autoload -Uz vcs_info
 
 precmd() { vcs_info }
+_osc7_cwd() { printf '\e]7;file://%s%s\e\\' "$HOST" "$PWD" }
+chpwd_functions+=(_osc7_cwd)
+precmd_functions+=(_osc7_cwd)
 zstyle ':vcs_info:git:*' formats ' (%b)'
 
 PROMPT='%{$fg[cyan]%}%n%{$reset_color%}@%{$fg[green]%}%m%{$reset_color%}: %{$fg[yellow]%}${PWD/#$HOME/~}%{$reset_color%}%{$fg[blue]%}${vcs_info_msg_0_}%{$reset_color%} $ '
